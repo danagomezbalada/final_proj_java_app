@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Activitat {
 	private int id;
-	private int idEsdeveniment;
+	private Esdeveniment esdeveniment;
 	private Date data;
 	private String titol;
 	private String descripcio;
@@ -16,18 +16,19 @@ public class Activitat {
 	private int placesActuals;
 	private Date dataIniciMostra;
 	private Date dataFiMostra;
-	private int idUbicacio;
-	private int idDepartament;
+	private Ubicacio ubicacio;
+	private Departament departament;
 	private List<Categoria> categories;
+	private List<Ponent> ponents;
 	
 	public Activitat() {}
 
-	public Activitat(int id, int idEsdeveniment, Date data, String titol, String descripcio, double preu,
-			int placesTotals, int placesActuals, Date dataIniciMostra, Date dataFiMostra, int idUbicacio,
-			int idDepartament) {
+	public Activitat(int id, Esdeveniment esdeveniment, Date data, String titol, String descripcio, double preu,
+			int placesTotals, int placesActuals, Date dataIniciMostra, Date dataFiMostra, Ubicacio ubicacio,
+			Departament departament) {
 		super();
 		this.id = id;
-		this.idEsdeveniment = idEsdeveniment;
+		this.esdeveniment = esdeveniment;
 		this.data = data;
 		this.titol = titol;
 		this.descripcio = descripcio;
@@ -36,9 +37,10 @@ public class Activitat {
 		this.placesActuals = placesActuals;
 		this.dataIniciMostra = dataIniciMostra;
 		this.dataFiMostra = dataFiMostra;
-		this.idUbicacio = idUbicacio;
-		this.idDepartament = idDepartament;
+		this.ubicacio = ubicacio;
+		this.departament = departament;
 		this.categories = new ArrayList<Categoria>();
+		this.ponents = new ArrayList<Ponent>();
 	}
 	
 	public void afegirCategoria(Categoria c) {
@@ -54,13 +56,27 @@ public class Activitat {
 		}
 		return s;
 	}
+	
+	public void afegirPonent(Ponent p) {
+		this.ponents.add(p);
+	}
+	
+	public String mostrarPonents() {
+		Iterator<Ponent> it = ponents.iterator();
+		String s = "";
+		while (it.hasNext()) {
+			Ponent p = it.next();
+			s += "\nId: " + p.getId() + " Nom: " + p.getNom();
+		}
+		return s;
+	}
 
 	public int getId() {
 		return id;
 	}
 
-	public int getIdEsdeveniment() {
-		return idEsdeveniment;
+	public Esdeveniment getEsdeveniment() {
+		return esdeveniment;
 	}
 
 	public Date getData() {
@@ -95,24 +111,28 @@ public class Activitat {
 		return dataFiMostra;
 	}
 
-	public int getIdUbicacio() {
-		return idUbicacio;
+	public Ubicacio getUbicacio() {
+		return ubicacio;
 	}
 
-	public int getIdDepartament() {
-		return idDepartament;
+	public Departament getDepartament() {
+		return departament;
 	}
 
 	public List<Categoria> getCategories() {
 		return categories;
 	}
 
+	public List<Ponent> getPonents() {
+		return ponents;
+	}
+
 	@Override
 	public String toString() {
-		return "Activitat [id=" + id + ", idEsdeveniment=" + idEsdeveniment + ", data=" + data + ", titol=" + titol
+		return "Activitat [id=" + id + ", esdeveniment=" + esdeveniment + ", data=" + data + ", titol=" + titol
 				+ ", descripcio=" + descripcio + ", preu=" + preu + ", placesTotals=" + placesTotals
 				+ ", placesActuals=" + placesActuals + ", dataIniciMostra=" + dataIniciMostra + ", dataFiMostra="
-				+ dataFiMostra + ", idUbicacio=" + idUbicacio + ", idDepartament=" + idDepartament + "\nCategories:"
-				+ mostrarCategories() + "]";
+				+ dataFiMostra + ", ubicacio=" + ubicacio + ", departament=" + departament + "\nCategories:"
+				+ mostrarCategories() + "\nPonents:" + mostrarPonents() + "]";
 	}
 }

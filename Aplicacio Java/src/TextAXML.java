@@ -1,7 +1,8 @@
-
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,15 +12,32 @@ import java.util.List;
 
 import classes.Activitat;
 import classes.Categoria;
+import classes.Departament;
+import classes.Esdeveniment;
+import classes.Ponent;
+import classes.Ubicacio;
 
 public class TextAXML {
 	
 	static String tipus = "";
 	static List<Categoria> categories = new ArrayList<Categoria>();
 	static List<Activitat> activitats = new ArrayList<Activitat>();
+	static List<Ubicacio> ubicacions = new ArrayList<Ubicacio>();
+	static List<Departament> departaments = new ArrayList<Departament>();
+	static List<Esdeveniment> esdeveniments = new ArrayList<Esdeveniment>();
+	static List<Ponent> ponents = new ArrayList<Ponent>();
 	
-
 	public static void main(String[] args) {
+		llegirFitxerICrearObjectes();
+		
+		crearXML();
+	}
+	
+	/**
+	 * Aquest metode s'encarrega de llegir el fitxer que conte les dades de cada objecte, 
+	 * i crear els objectes corresponents, afegint-los a les llistes de cada tipus d'objecte.
+	 */
+	private static void llegirFitxerICrearObjectes() {
 		int lectura;
 		char ch;
 		StringBuilder s = new StringBuilder();
@@ -40,7 +58,6 @@ public class TextAXML {
 					s.append(ch);
 				}
 			}
-			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -49,10 +66,62 @@ public class TextAXML {
 	}
 	
 	/**
+	 * Metode encarregat de crear un fitxer XML amb totes les dades rebudes del fitxer original.
+	 */
+	private static void crearXML() {
+		try {
+			File xml = new File (Constants.DIRECTORI+Constants.FITXER_XML);
+		    PrintStream escriptor;
+			escriptor = new PrintStream(xml);
+			/*Iterator<Bank> it=bancs.iterator();
+			String aux = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bancs>";
+			while (it.hasNext()) {
+				Bank b = it.next();
+				aux += "\n\t<banc>";
+				
+				//IBAN
+				aux += "\n\t\t<iban>"+b.getIban()+"</iban>";
+				
+				//PERSON
+				aux += "\n\t\t<person>";
+				aux += "\n\t\t\t<firstName>"+b.getPerson().getFirstName()+"</firstName>";
+				aux += "\n\t\t\t<lastName>"+b.getPerson().getLastName()+"</lastName>";
+				aux += "\n\t\t\t<age>"+b.getPerson().getAge()+"</age>";
+				aux += "\n\t\t</person>";
+				
+				//EMAIL
+				if (b.getEmail()!=null) {
+					aux += "\n\t\t<emails>";
+					for (String email : b.getEmail()) {
+						aux += "\n\t\t\t<email>"+email+"</email>";
+					}
+					aux += "\n\t\t</emails>";
+				}
+				
+				//BALANCE
+				aux += "\n\t\t<balance>"+b.getBalance()+"</balance>";
+				
+				//VIP
+				aux += "\n\t\t<vip>"+b.isVip()+"</vip>";
+				aux += "\n\t</banc>";
+				
+			}
+			aux += "\n</bancs>";
+			escriptor.print(aux);
+			escriptor.close();
+			
+			System.out.println("Fitxer account.xml creat correctament.");*/
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Segons el tipus d'objecte a crear, crida el metode corresponent.
 	 * @param valors - Les dades de l'objecte a ser creat.
 	 */
-	public static void afegirValors(String [] valors) {
+	private static void afegirValors(String [] valors) {
 		switch (tipus) {
 			case "C":
 				insertarCategoria(valors);
@@ -80,8 +149,6 @@ public class TextAXML {
 				break;
 			default:
 		}
-				
-			
 	}	
 	
 	/**
@@ -96,20 +163,58 @@ public class TextAXML {
 		categories.add(categoria);
 	}
 	
+	/**
+	 * Crea un objecte ubicacio amb els valors rebuts.
+	 * @param valors
+	 */
 	private static void insertarUbicacio(String[] valors) {
+		int id = Integer.parseInt(valors[0]);
+		String nom = valors[1];
 		
+		Ubicacio ubicacio = new Ubicacio(id, nom);
+		ubicacions.add(ubicacio);
 	}
 	
+	/**
+	 * Crea un objecte departament amb els valors rebuts.
+	 * @param valors
+	 */
 	private static void insertarDepartament(String[] valors) {
+		int id = Integer.parseInt(valors[0]);
+		String nom = valors[1];
 		
+		Departament departament = new Departament(id, nom);
+		departaments.add(departament);
 	}
 	
+	/**
+	 * Crea un objecte esdeveniment amb els valors rebuts.
+	 * @param valors
+	 */
 	private static void insertarEsdeveniment(String[] valors) {
+		int id = Integer.parseInt(valors[0]);
+		int any = Integer.parseInt(valors[1]);
+		String nom = valors[2];
+		String descripcio = valors[3];
+		boolean actiu = Boolean.parseBoolean(valors[4].toLowerCase());
 		
+		Esdeveniment esdeveniment = new Esdeveniment(id, any, nom, descripcio, actiu);
+		esdeveniments.add(esdeveniment);
 	}
 	
+	/**
+	 * Crea un objecte ponent amb els valors rebuts.
+	 * @param valors
+	 */
 	private static void insertarPonent(String[] valors) {
+		int id = Integer.parseInt(valors[0]);
+		String nom = valors[1];
+		String cognoms = valors[2];
+		int telefon = Integer.parseInt(valors[3]);
+		String email = valors[4];
 		
+		Ponent ponent = new Ponent(id, nom, cognoms, telefon, email);
+		ponents.add(ponent);
 	}
 	
 	/**
@@ -124,19 +229,72 @@ public class TextAXML {
 		double preu = Double.parseDouble(valors[4]);
 		int placesTotals = Integer.parseInt(valors[5]);
 		int placesActuals = Integer.parseInt(valors[6]);
-		int idEsdeveniment = Integer.parseInt(valors[7]);
+		
+		//Afegir esdeveniment
+		Esdeveniment esdeveniment = null;
+		boolean trobat = false;
+		Iterator<Esdeveniment> itEsdeveniments = esdeveniments.iterator();
+		while (itEsdeveniments.hasNext() && !trobat) {
+			esdeveniment = itEsdeveniments.next();
+			if (esdeveniment.getId() == Integer.parseInt(valors[7]))
+				trobat = true;
+		}
+		
 		Date dataIniciMostra = stringADate(valors[8]);
 		Date dataFiMostra = stringADate(valors[9]);
-		int idUbicacio = Integer.parseInt(valors[10]);
-		int idDepartament = Integer.parseInt(valors[11]);
 		
-		Activitat activitat = new Activitat(id, idEsdeveniment, data, titol, descripcio, preu, placesTotals, placesActuals, dataIniciMostra, 
-				dataFiMostra, idUbicacio, idDepartament);
+		//Afegir ubicacio
+		Ubicacio ubicacio = null;
+		trobat = false;
+		Iterator<Ubicacio> itUbicacions = ubicacions.iterator();
+		while (itUbicacions.hasNext() && !trobat) {
+			ubicacio = itUbicacions.next();
+			if (ubicacio.getId() == Integer.parseInt(valors[10]))
+				trobat = true;
+		}
+		
+		//Afegir departament
+		Departament departament = null;
+		trobat = false;
+		Iterator<Departament> itDepartaments = departaments.iterator();
+		while (itDepartaments.hasNext() && !trobat) {
+			departament = itDepartaments.next();
+			if (departament.getId() == Integer.parseInt(valors[11]))
+				trobat = true;
+		}
+		
+		Activitat activitat = new Activitat(id, esdeveniment, data, titol, descripcio, preu, placesTotals, placesActuals, dataIniciMostra, 
+				dataFiMostra, ubicacio, departament);
 		activitats.add(activitat);
 		
 	}
 	
+	/**
+	 * Afegeix l'activitat amb l'id rebut al ponent amb l'id rebut, i viceversa.
+	 * @param valors
+	 */
 	private static void insertarRelacioActivitatPonent(String[] valors) {
+		boolean trobat = false;
+		Ponent p = null;
+		Activitat a = null;
+		
+		Iterator<Activitat> itActivitats = activitats.iterator();
+		while (itActivitats.hasNext() && !trobat) {
+			a = itActivitats.next();
+			if (a.getId() == Integer.parseInt(valors[0]))
+				trobat = true;
+		}
+		trobat = false;
+		Iterator<Ponent> itPonents = ponents.iterator();
+		while (itPonents.hasNext() && !trobat) {
+			p = itPonents.next();
+			if (p.getId() == Integer.parseInt(valors[1]))
+				trobat = true;
+		}
+		if (a != null && p != null) {
+			p.afegirActivitat(a);
+			a.afegirPonent(p);
+		}
 		
 	}
 	
@@ -165,7 +323,6 @@ public class TextAXML {
 		if (a != null && c != null) {
 			c.afegirActivitat(a);
 			a.afegirCategoria(c);
-			System.out.println(a + "\n" + c);
 		}
 		
 		

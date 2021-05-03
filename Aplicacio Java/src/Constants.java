@@ -8,5 +8,6 @@ public class Constants {
 	public static final String DIRECTORI = "D:\\Documents\\DAM 2\\M13 Projecte\\";
 	public static final String FITXER_DADES = "dades.txt";
 	public static final String FITXER_VERSIO = "versio.txt";
+	public static final String FITXER_XML = "dades.xml";
 
 }
