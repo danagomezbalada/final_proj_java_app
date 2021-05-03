@@ -15,7 +15,9 @@ import classes.Categoria;
 import classes.Departament;
 import classes.Esdeveniment;
 import classes.Ponent;
+import classes.Reserva;
 import classes.Ubicacio;
+import classes.Usuari;
 
 public class TextAXML {
 	
@@ -26,6 +28,8 @@ public class TextAXML {
 	static List<Departament> departaments = new ArrayList<Departament>();
 	static List<Esdeveniment> esdeveniments = new ArrayList<Esdeveniment>();
 	static List<Ponent> ponents = new ArrayList<Ponent>();
+	static List<Usuari> usuaris = new ArrayList<Usuari>();
+	static List<Reserva> reserves = new ArrayList<Reserva>();
 	
 	public static void main(String[] args) {
 		llegirFitxerICrearObjectes();
@@ -58,6 +62,7 @@ public class TextAXML {
 					s.append(ch);
 				}
 			}
+			System.out.println(usuaris);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -147,10 +152,16 @@ public class TextAXML {
 			case "AC":
 				insertarRelacioActivitatCategoria(valors);
 				break;
+			case "US":
+				insertarUsuari(valors);
+				break;
+			case "R":
+				insertarReserva(valors);
+				break;
 			default:
 		}
-	}	
-	
+	}
+
 	/**
 	 * Crea un objecte categoria amb els valors rebuts.
 	 * @param valors
@@ -324,8 +335,45 @@ public class TextAXML {
 			c.afegirActivitat(a);
 			a.afegirCategoria(c);
 		}
+	}
+	
+	private static void insertarUsuari(String[] valors) {
+		int id = Integer.parseInt(valors[0]);
+		String email = valors[1];
 		
+		Usuari usuari = new Usuari(id, email);
+		usuaris.add(usuari);
+	}
+	
+	private static void insertarReserva(String[] valors) {
+		int id = Integer.parseInt(valors[0]);
 		
+		//Afegir usuari
+		Usuari usuari = null;
+		boolean trobat = false;
+		Iterator<Usuari> itUsuaris = usuaris.iterator();
+		while (itUsuaris.hasNext() && !trobat) {
+			usuari = itUsuaris.next();
+			if (usuari.getId() == Integer.parseInt(valors[1]))
+				trobat = true;
+		}
+		
+		//Afegir activitat
+		Activitat activitat = null;
+		trobat = false;
+		Iterator<Activitat> itActivitats = activitats.iterator();
+		while (itActivitats.hasNext() && !trobat) {
+			activitat = itActivitats.next();
+			if (activitat.getId() == Integer.parseInt(valors[2]))
+				trobat = true;
+		}
+		
+		Date data = stringADate(valors[3]);
+		String codiTransaccio = valors[4];
+		int estat = Integer.parseInt(valors[5]);
+		
+		Reserva reserva = new Reserva(id, usuari, activitat, data, codiTransaccio, estat);
+		reserves.add(reserva);
 	}
 	
 	/**
