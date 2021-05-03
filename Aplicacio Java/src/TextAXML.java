@@ -1,9 +1,10 @@
+import java.io.File;
 
-public class Programa {
+public class TextAXML {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		File fitxer = new File(Constants.DIRECTORI+Constants.FITXER_DADES);
+		
 	}
 
 }
