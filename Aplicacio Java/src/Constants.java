@@ -12,5 +12,12 @@ public class Constants {
 	public static final String XML_ACTIVITATS = "activitats.xml";
 	public static final String XML_CATEGORIES = "categories.xml";
 	public static final String XML_ESDEVENIMENTS = "esdeveniments.xml";
+	
+	//TODO: Canviar servidor web.
+	public static final String PAGINA_WEB = "projectedamjds.000webhostapp.com";
+	public static final String SERVIDOR_FTP = "files.000webhost.com";
+	public static final int PORT_FTP = 21;
+	public static final String USUARI_FTP = "projectedamjds";
+	public static final String CONTRASENYA_FTP = "Pr0j3ct3D@m";
 
 }
