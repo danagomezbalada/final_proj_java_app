@@ -1,7 +1,10 @@
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
 
 /**
  * Classe encarregada de connectar al servidor per FTP i pujar els fitxers.
@@ -10,6 +13,7 @@ import org.apache.commons.net.ftp.FTPReply;
  * @author Javier Garcia
  */
 public class PujarPerFTP {
+	
 	static String server = Constants.SERVIDOR_FTP;
     static int port = Constants.PORT_FTP;
     static String user = Constants.USUARI_FTP;
@@ -18,32 +22,60 @@ public class PujarPerFTP {
     public static void main(String[] args) {
         FTPClient ftpClient = new FTPClient();
         try {
+        	//Connecta al servidor FTP
             ftpClient.connect(server, port);
-            respostaServidor(ftpClient);
-            int replyCode = ftpClient.getReplyCode();
-            if (!FTPReply.isPositiveCompletion(replyCode)) {
-                System.out.println("Operation failed. Server reply code: " + replyCode);
-                return;
-            }
-            boolean success = ftpClient.login(user, pass);
-            respostaServidor(ftpClient);
-            if (!success) {
-                System.out.println("Could not login to the server");
-                return;
-            } else {
-                System.out.println("LOGGED IN SERVER");
-            }
+            ftpClient.login(user, pass);
+            ftpClient.enterLocalPassiveMode();
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            System.out.println("Connexio correcta al servidor " + server + ".");
+ 
+            //Puja el fitxer de versio
+            File fitxerVersioLocal = new File(Constants.DIRECTORI+Constants.FITXER_VERSIO);
+            String fitxerVersioRemot = Constants.FITXER_VERSIO;
+            InputStream inputStream = new FileInputStream(fitxerVersioLocal);
+            boolean correcte = ftpClient.storeFile(fitxerVersioRemot, inputStream);
+            if (correcte) 
+                System.out.println("Fitxer " + Constants.FITXER_VERSIO + " pujat correctament.");
+            inputStream.close();
+            
+            //Puja els XML de dades
+           //Activitats
+            File fitxerActivitatsLocal = new File(Constants.DIRECTORI+Constants.XML_ACTIVITATS);
+            String fitxerActivitatsRemot = Constants.XML_ACTIVITATS;
+            inputStream = new FileInputStream(fitxerActivitatsLocal);
+            correcte = ftpClient.storeFile(fitxerActivitatsRemot, inputStream);
+            if (correcte) 
+                System.out.println("Fitxer " + Constants.XML_ACTIVITATS + " pujat correctament.");
+            inputStream.close();
+           //Categories
+            File fitxerCategoriesLocal = new File(Constants.DIRECTORI+Constants.XML_CATEGORIES);
+            String fitxerCategoriesRemot = Constants.XML_CATEGORIES;
+            inputStream = new FileInputStream(fitxerCategoriesLocal);
+            correcte = ftpClient.storeFile(fitxerCategoriesRemot, inputStream);
+            if (correcte) 
+                System.out.println("Fitxer " + Constants.XML_CATEGORIES + " pujat correctament.");
+            inputStream.close();
+          //Esdeveniments
+            File fitxerEsdevenimentsLocal = new File(Constants.DIRECTORI+Constants.XML_ESDEVENIMENTS);
+            String fitxerEsdevenimentsRemot = Constants.XML_ESDEVENIMENTS;
+            inputStream = new FileInputStream(fitxerEsdevenimentsLocal);
+            correcte = ftpClient.storeFile(fitxerEsdevenimentsRemot, inputStream);
+            if (correcte) 
+                System.out.println("Fitxer " + Constants.XML_ESDEVENIMENTS + " pujat correctament.");
+            inputStream.close();
+            
+ 
         } catch (IOException ex) {
-            System.out.println("Oops! Something wrong happened");
+            System.out.println("Error: " + ex.getMessage());
             ex.printStackTrace();
-        }
-    }
-    
-    private static void respostaServidor(FTPClient ftpClient) {
-        String[] replies = ftpClient.getReplyStrings();
-        if (replies != null && replies.length > 0) {
-            for (String aReply : replies) {
-                System.out.println("SERVER: " + aReply);
+        } finally {
+            try {
+                if (ftpClient.isConnected()) {
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
     }

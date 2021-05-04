@@ -102,7 +102,7 @@ public class TextAXML {
 				aux += "\n\t\t<departament>" + a.getDepartament().getNom() + "</departament>";
 				aux += "\n\t\t<ponents>";
 				for (Ponent p : a.getPonents()) 
-					aux += "\n\t\t\t<ponent>" + p.getNom() +  p.getCognoms() + "</ponent>";
+					aux += "\n\t\t\t<ponent>" + p.getNom() + " " + p.getCognoms() + "</ponent>";
 				aux += "\n\t\t</ponents>";
 				aux += "\n\t\t<preu>" + a.getPreu() + "</preu>";
 				aux += "\n\t\t<placesTotals>" + a.getPlacesTotals() + "</placesTotals>";
@@ -152,6 +152,27 @@ public class TextAXML {
 			escriptor.print(aux);
 			escriptor.close();
 			System.out.println("Fitxer " + Constants.XML_ESDEVENIMENTS + " creat correctament.");
+			
+			//-------------Creacio reserves---------------------
+			xml = new File(Constants.DIRECTORI+Constants.XML_RESERVES);
+			escriptor = new PrintStream(xml);
+			aux = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<reserves>";
+			Iterator<Reserva> it3 = reserves.iterator();
+			while (it3.hasNext()) {
+				Reserva r = it3.next();
+				aux += "\n\t<reserva>";
+				aux += "\n\t\t<id>" + r.getId() + "</id>";
+				aux += "\n\t\t<idUsuari>" + r.getUsuari().getId() + "</idUsuari>";
+				aux += "\n\t\t<idActivitat>" + r.getActivitat().getId() + "</idActivitat>";
+				aux += "\n\t\t<data>" + r.getData() + "</data>";
+				aux += "\n\t\t<codiTransaccio>" + r.getCodiTransaccio() + "</codiTransaccio>";
+				aux += "\n\t\t<estat>" + r.getEstat() + "</estat>";
+				aux += "\n\t</reserva>";
+			}
+			aux += "\n</reserves>";
+			escriptor.print(aux);
+			escriptor.close();
+			System.out.println("Fitxer " + Constants.XML_RESERVES + " creat correctament.");
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
