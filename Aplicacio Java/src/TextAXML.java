@@ -1,6 +1,9 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.text.ParseException;
@@ -19,6 +22,12 @@ import classes.Reserva;
 import classes.Ubicacio;
 import classes.Usuari;
 
+/**
+ * Classe encarregada de la conversio del fitxer de text a XML.
+ * @author Sergi Tor
+ * @author Dana Gomez
+ * @author Javier Garcia
+ */
 public class TextAXML {
 	
 	static String tipus = "";
@@ -35,7 +44,9 @@ public class TextAXML {
 		llegirFitxerICrearObjectes();
 		
 		crearXML();
-	}
+		
+		actualitzarVersio();
+	}	
 	
 	/**
 	 * Aquest metode s'encarrega de llegir el fitxer que conte les dades de cada objecte, 
@@ -62,7 +73,6 @@ public class TextAXML {
 					s.append(ch);
 				}
 			}
-			System.out.println(usuaris);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -71,53 +81,104 @@ public class TextAXML {
 	}
 	
 	/**
-	 * Metode encarregat de crear un fitxer XML amb totes les dades rebudes del fitxer original.
+	 * Metode encarregat de crear varis fitxers XML per activitats, categories i esdeveniments.
 	 */
 	private static void crearXML() {
 		try {
-			File xml = new File (Constants.DIRECTORI+Constants.FITXER_XML);
-		    PrintStream escriptor;
-			escriptor = new PrintStream(xml);
-			/*Iterator<Bank> it=bancs.iterator();
-			String aux = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bancs>";
+			//-------------Creacio activitats---------------------
+			File xml = new File (Constants.DIRECTORI+Constants.XML_ACTIVITATS);
+		    PrintStream escriptor = new PrintStream(xml);
+			String aux = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<activitats>";
+			Iterator<Activitat> it = activitats.iterator();
 			while (it.hasNext()) {
-				Bank b = it.next();
-				aux += "\n\t<banc>";
-				
-				//IBAN
-				aux += "\n\t\t<iban>"+b.getIban()+"</iban>";
-				
-				//PERSON
-				aux += "\n\t\t<person>";
-				aux += "\n\t\t\t<firstName>"+b.getPerson().getFirstName()+"</firstName>";
-				aux += "\n\t\t\t<lastName>"+b.getPerson().getLastName()+"</lastName>";
-				aux += "\n\t\t\t<age>"+b.getPerson().getAge()+"</age>";
-				aux += "\n\t\t</person>";
-				
-				//EMAIL
-				if (b.getEmail()!=null) {
-					aux += "\n\t\t<emails>";
-					for (String email : b.getEmail()) {
-						aux += "\n\t\t\t<email>"+email+"</email>";
-					}
-					aux += "\n\t\t</emails>";
-				}
-				
-				//BALANCE
-				aux += "\n\t\t<balance>"+b.getBalance()+"</balance>";
-				
-				//VIP
-				aux += "\n\t\t<vip>"+b.isVip()+"</vip>";
-				aux += "\n\t</banc>";
-				
+				Activitat a = it.next();
+				aux += "\n\t<activitat>";
+				aux += "\n\t\t<id>" + a.getId() + "</id>";
+				aux += "\n\t\t<idEsdeveniment>" + a.getEsdeveniment().getId() + "</idEsdeveniment>";
+				aux += "\n\t\t<titol>" + a.getTitol() + "</titol>";
+				aux += "\n\t\t<data>" + a.getData() + "</data>";
+				aux += "\n\t\t<ubicacio>" + a.getUbicacio().getNom() + "</ubicacio>";
+				aux += "\n\t\t<descripcio>" + a.getDescripcio() + "</descripcio>";
+				aux += "\n\t\t<departament>" + a.getDepartament().getNom() + "</departament>";
+				aux += "\n\t\t<ponents>";
+				for (Ponent p : a.getPonents()) 
+					aux += "\n\t\t\t<ponent>" + p.getNom() +  p.getCognoms() + "</ponent>";
+				aux += "\n\t\t</ponents>";
+				aux += "\n\t\t<preu>" + a.getPreu() + "</preu>";
+				aux += "\n\t\t<placesTotals>" + a.getPlacesTotals() + "</placesTotals>";
+				aux += "\n\t\t<placesActuals>" + a.getPlacesActuals() + "</placesActuals>";
+				aux += "\n\t\t<dataIniciMostra>" + a.getDataIniciMostra() + "</dataIniciMostra>";
+				aux += "\n\t\t<dataFiMostra>" + a.getDataFiMostra() + "</dataFiMostra>";
+				aux += "\n\t</activitat>";
 			}
-			aux += "\n</bancs>";
+			aux += "\n</activitats>";
 			escriptor.print(aux);
 			escriptor.close();
+			System.out.println("Fitxer " + Constants.XML_ACTIVITATS + " creat correctament.");
 			
-			System.out.println("Fitxer account.xml creat correctament.");*/
+			//-------------Creacio categories---------------------
+			xml = new File(Constants.DIRECTORI+Constants.XML_CATEGORIES);
+			escriptor = new PrintStream(xml);
+			aux = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<categories>";
+			Iterator<Categoria> it1 = categories.iterator();
+			while (it1.hasNext()) {
+				Categoria c = it1.next();
+				aux += "\n\t<categoria>";
+				aux += "\n\t\t<id>" + c.getId() + "</id>";
+				aux += "\n\t\t<nom>" + c.getNom() + "</nom>";
+				aux += "\n\t</categoria>";
+			}
+			aux += "\n</categories>";
+			escriptor.print(aux);
+			escriptor.close();
+			System.out.println("Fitxer " + Constants.XML_CATEGORIES + " creat correctament.");
+			
+			//-------------Creacio esdeveniments---------------------
+			xml = new File(Constants.DIRECTORI+Constants.XML_ESDEVENIMENTS);
+			escriptor = new PrintStream(xml);
+			aux = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<esdeveniments>";
+			Iterator<Esdeveniment> it2 = esdeveniments.iterator();
+			while (it2.hasNext()) {
+				Esdeveniment e = it2.next();
+				aux += "\n\t<esdeveniment>";
+				aux += "\n\t\t<id>" + e.getId() + "</id>";
+				aux += "\n\t\t<any>" + e.getAny() + "</any>";
+				aux += "\n\t\t<nom>" + e.getNom() + "</nom>";
+				aux += "\n\t\t<descripcio>" + e.getDescripcio() + "</descripcio>";
+				aux += "\n\t\t<actiu>" + e.isActiu() + "</actiu>";
+				aux += "\n\t</esdeveniment>";
+			}
+			aux += "\n</esdeveniments>";
+			escriptor.print(aux);
+			escriptor.close();
+			System.out.println("Fitxer " + Constants.XML_ESDEVENIMENTS + " creat correctament.");
 			
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Metode que actualitza el fitxer de versio sumant 0.3 al valor d'aquest.
+	 */
+	public static void actualitzarVersio() {
+		String fitxer = Constants.DIRECTORI+Constants.FITXER_VERSIO;
+		String s = "0";
+		double numVersio = 0;
+		try (BufferedReader lector = new BufferedReader(new FileReader(fitxer));) {
+			while ((s=lector.readLine()) != null)
+				numVersio = Double.valueOf(s);
+		} catch (IOException e) {
+			System.err.println("Error al llegir el fitxer de versio.");
+			e.printStackTrace();
+		}
+		numVersio += 0.3;
+		s = Double.toString(numVersio);
+		try (BufferedWriter escriptor = new BufferedWriter(new FileWriter(fitxer));){
+			escriptor.write(s);
+			System.out.println("Fitxer " + Constants.FITXER_VERSIO + " actualitzat correctament! (Versio " + s + ")");
+		} catch (IOException e) {
+			System.err.println("Error al actualitzar el fitxer de versio.");
 			e.printStackTrace();
 		}
 	}
@@ -337,6 +398,10 @@ public class TextAXML {
 		}
 	}
 	
+	/**
+	 * Crea un objecte usuari amb els valors rebuts.
+	 * @param valors
+	 */
 	private static void insertarUsuari(String[] valors) {
 		int id = Integer.parseInt(valors[0]);
 		String email = valors[1];
@@ -345,6 +410,10 @@ public class TextAXML {
 		usuaris.add(usuari);
 	}
 	
+	/**
+	 * Crea un objecte reserva amb els valors rebuts, i afegeix la reserva a la llista de reserves de l'usuari(constructor).
+	 * @param valors
+	 */
 	private static void insertarReserva(String[] valors) {
 		int id = Integer.parseInt(valors[0]);
 		
