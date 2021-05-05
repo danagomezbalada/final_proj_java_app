@@ -72,7 +72,6 @@ public class PujarPerFTP {
             if (correcte) 
                 System.out.println("Fitxer " + Constants.XML_RESERVES + " pujat correctament.");
             inputStream.close();
-            
  
         } catch (IOException ex) {
             System.out.println("Error: " + ex.getMessage());
