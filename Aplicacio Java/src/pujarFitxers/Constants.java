@@ -1,3 +1,4 @@
+package pujarFitxers;
 /**
  * Classe que conte les variables constants del programa.
  * @author Sergi Tor
@@ -24,5 +25,8 @@ public class Constants {
 	public static final int PORT_FTP = 21;
 	public static final String USUARI_FTP = "projectedamjds";
 	public static final String CONTRASENYA_FTP = "Pr0j3ct3D@m";*/
+	
+	public static final String BBDD_FIREBASE = "https://aplicacio-android-default-rtdb.europe-west1.firebasedatabase.app/";
+	public static final String CLAU_API = "AIzaSyDSVcP38brYteYKDeUXN9BFwnRdxE2Tf1E";
 
 }

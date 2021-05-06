@@ -11,7 +11,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 public class JacksonUtility {
 
-	protected static final Logger 			LOGGER 					= Logger.getRootLogger();
+	protected static final Logger LOGGER = Logger.getRootLogger();
 	
 	
 	

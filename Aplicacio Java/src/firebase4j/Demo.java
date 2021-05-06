@@ -95,7 +95,7 @@ public class Demo {
 		System.out.println( "\n\nResult of GET (for the test-DELETE):\n" + response );
 
 		// Sign Up user for Firebase's Auth Service demo (https://firebase.google.com/docs/reference/rest/auth/)
-		if(firebase_apiKey != null) {
+		/*if(firebase_apiKey != null) {
 
 			firebase = new Firebase("https://www.googleapis.com/identitytoolkit/v3/relyingparty", false);
 			firebase.addQuery("key", firebase_apiKey);
@@ -112,7 +112,7 @@ public class Demo {
 		} else {
 			System.out.println("\n\nResult of Signing Up:\n failed, because no API Key was provided.");
 			System.out.println("\n");
-		}
+		}*/
 
 	}
 	
