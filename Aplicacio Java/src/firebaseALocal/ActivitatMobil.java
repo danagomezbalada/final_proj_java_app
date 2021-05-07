@@ -5,6 +5,12 @@ public class ActivitatMobil {
 	private int id;
 	private int placesActuals;
 	
+	public ActivitatMobil(int id) {
+		super();
+		this.id = id;
+		this.placesActuals = 0;
+	}
+	
 	public ActivitatMobil(int id, int placesActuals) {
 		super();
 		this.id = id;
