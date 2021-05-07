@@ -28,7 +28,7 @@ public class PujarPerFTP {
             ftpClient.login(user, pass);
             ftpClient.enterLocalPassiveMode();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            System.out.println("Connexio correcta al servidor " + server + ".");
+            System.out.println("Connexio correcta al servidor " + server);
  
             //Puja el fitxer de versio
             File fitxerVersioLocal = new File(Constants.DIRECTORI+Constants.FITXER_VERSIO);

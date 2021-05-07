@@ -15,26 +15,35 @@ import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import classes.ActivitatMobil;
+import classes.ReservaMobil;
 import firebase4j.Firebase;
 import firebase4j.FirebaseException;
 import firebase4j.FirebaseResponse;
 import pujarFitxers.Constants;
 
+/**
+ * Classe encarregada de connectar a Firebase i guardar les dades obtingudes.
+ * @author Sergi Tor
+ * @author Dana Gomez
+ * @author Javier Garcia
+ */
 public class ObtenirDadesFirebase {
 	
 	static Firebase firebase;
 	static List<ActivitatMobil> activitats;
 	static List<ReservaMobil> reserves;
 
-	public static void main(String[] args) {
+	public static void iniciar() {
 		connectarICrearFitxer();
 		
 		obtenirDades();
-		
 	}
 	
 	/**
-	 * 
+	 * Aquest metode s'encarrega d'establir una connexio amb la BBDD de Firebase i 
+	 * obtenir totes les seves dades en format JSON.
+	 * Guarda les dades obtingudes en un fitxer JSON.
 	 */
 	public static void connectarICrearFitxer() {
 		try {
@@ -60,14 +69,16 @@ public class ObtenirDadesFirebase {
 	}
 	
 	/**
-	 * 
+	 * Obte les dades del fitxer JSON creat anteriorment. 
+	 * Guarda aquestes dades mitjancant mapes per obtenir les ID i els valors de cada objecte, i
+	 * posteriorment crea objectes del tipus corresponent i els guarda en una llista.
 	 */
 	public static void obtenirDades() {
 		activitats = new ArrayList<ActivitatMobil>();
 		reserves = new ArrayList<ReservaMobil>();
 		try {
 		    ObjectMapper mapper = new ObjectMapper();
-		    System.out.println("Obtenint dades del fitxer...");
+		    System.out.println("Obtenint dades de " + Constants.FITXER_JSON);
 		    
 		    //Creem el primer mapa que agafara els valors de A i R (totes les activitats i totes les reserves)
 		    Map<?, ?> map = mapper.readValue(Paths.get(Constants.DIRECTORI+"firebase.json").toFile(), Map.class);
@@ -124,7 +135,7 @@ public class ObtenirDadesFirebase {
 			    	}
 			    }
 		    }
-		    System.out.println("Dades obtingudes correctament.");
+		    System.out.println("Dades obtingudes correctament.\n");
 
 		} catch (Exception ex) {
 		    ex.printStackTrace();
@@ -146,5 +157,15 @@ public class ObtenirDadesFirebase {
 		}
 		return date;
 	}
+
+	public static List<ActivitatMobil> getActivitats() {
+		return activitats;
+	}
+
+	public static List<ReservaMobil> getReserves() {
+		return reserves;
+	}
+	
+	
 
 }

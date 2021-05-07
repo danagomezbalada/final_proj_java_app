@@ -1,4 +1,4 @@
-package firebaseALocal;
+package classes;
 
 public class ActivitatMobil {
 	

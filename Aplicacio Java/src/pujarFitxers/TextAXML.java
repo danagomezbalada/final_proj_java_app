@@ -82,7 +82,7 @@ public class TextAXML {
 	}
 	
 	/**
-	 * Metode encarregat de crear varis fitxers XML per activitats, categories i esdeveniments.
+	 * Metode encarregat de crear varis fitxers XML per activitats, categories, esdeveniments i reserves.
 	 */
 	private static void crearXML() {
 		try {

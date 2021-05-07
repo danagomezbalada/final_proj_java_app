@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="llibraries/maven/jackson-core-asl-1.9.5.jar"/>
 	<classpathentry kind="lib" path="llibraries/maven/jackson-mapper-asl-1.9.5.jar"/>
 	<classpathentry kind="lib" path="llibraries/maven/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="llibraries/mysql-connector-java-5.1.49-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
