@@ -93,7 +93,7 @@ public class PujarPerMySQL {
 			/*tring sql="INSERT INTO reserves (data,poblacio,temperatura) VALUES ('"+data.getText().toString()+"','"+municipi.getText().toString()+"',"+temperatura.getText()+")";
 			Statement statement = connexio.createStatement();
 			statement.execute(sql);
-			statement.close();
+			statement.close(); as
 			System.out.println("INSERT realitzat correctament.");*/
 		}
 	}
