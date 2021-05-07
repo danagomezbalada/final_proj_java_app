@@ -2,8 +2,11 @@ package firebaseALocal;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -84,17 +87,27 @@ public class PujarPerMySQL {
 	}
 	
 	/**
-	 * Aquesta funcio afegeix les noves reserves rebudes a la BBDD.
+	 * Aquesta funcio afegeix les noves reserves rebudes a la BBDD si no existeixen.
 	 * @param reserves
 	 * @throws SQLException
 	 */
 	private static void insertarReserves(List<ReservaMobil> reserves) throws SQLException {
 		for (ReservaMobil r : reserves) {
-			/*tring sql="INSERT INTO reserves (data,poblacio,temperatura) VALUES ('"+data.getText().toString()+"','"+municipi.getText().toString()+"',"+temperatura.getText()+")";
-			Statement statement = connexio.createStatement();
-			statement.execute(sql);
-			statement.close(); as
-			System.out.println("INSERT realitzat correctament.");*/
+			PreparedStatement stmt = connexio.prepareStatement("SELECT * FROM reserva WHERE id = ?");
+			    stmt.setInt(1, r.getId());
+			ResultSet rs = stmt.executeQuery();
+			if (!rs.isBeforeFirst() ) {    
+				String s = new SimpleDateFormat("yyyy-MM-dd").format(r.getData());
+				String sql="INSERT INTO reserva (id, id_usuari,id_activitat,data,codi_transaccio,estat) VALUES ("
+						+r.getId()+","+r.getUsuari()+","+r.getIdActivitat()+",'"
+						+s+"','"+r.getCodiTransaccio()+"',"+r.getEstat()+")";
+				Statement statement = connexio.createStatement();
+				statement.execute(sql);
+				statement.close();
+				System.out.println("Reserva " + r.getId() + " insertada correctament.");
+			}
+			stmt.close();
+			rs.close();
 		}
 	}
 

@@ -20,7 +20,7 @@ public class PujarPerFTP {
     static String user = Constants.USUARI_FTP;
     static String pass = Constants.CONTRASENYA_FTP;
 	
-    public static void main(String[] args) {
+    public static void iniciar() {
         FTPClient ftpClient = new FTPClient();
         try {
         	//Connecta al servidor FTP

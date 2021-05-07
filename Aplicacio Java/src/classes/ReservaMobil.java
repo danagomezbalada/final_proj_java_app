@@ -9,7 +9,7 @@ public class ReservaMobil {
 	private Date data;
 	private int estat;
 	private int idActivitat;
-	private String usuari;
+	private int idUsuari;
 	
 	public ReservaMobil(int id) {
 		super();
@@ -18,17 +18,17 @@ public class ReservaMobil {
 		this.data = null;
 		this.estat = 0;
 		this.idActivitat = 0;
-		this.usuari = "";
+		this.idUsuari = 0;
 	}
 	
-	public ReservaMobil(int id, String codiTransaccio, Date data, int estat, int idActivitat, String usuari) {
+	public ReservaMobil(int id, String codiTransaccio, Date data, int estat, int idActivitat, int idUsuari) {
 		super();
 		this.id = id;
 		this.codiTransaccio = codiTransaccio;
 		this.data = data;
 		this.estat = estat;
 		this.idActivitat = idActivitat;
-		this.usuari = usuari;
+		this.idUsuari = idUsuari;
 	}
 
 	public int getId() {
@@ -81,19 +81,19 @@ public class ReservaMobil {
 	}
 
 
-	public String getUsuari() {
-		return usuari;
+	public int getUsuari() {
+		return idUsuari;
 	}
 
 
-	public void setUsuari(String usuari) {
-		this.usuari = usuari;
+	public void setUsuari(int usuari) {
+		this.idUsuari = usuari;
 	}
 
 	@Override
 	public String toString() {
 		return "ReservaMobil [id=" + id + ", codiTransaccio=" + codiTransaccio + ", data=" + data + ", estat=" + estat
-				+ ", idActivitat=" + idActivitat + ", usuari=" + usuari + "]";
+				+ ", idActivitat=" + idActivitat + ", usuari=" + idUsuari + "]";
 	}
 	
 }

@@ -41,7 +41,7 @@ public class TextAXML {
 	static List<Usuari> usuaris = new ArrayList<Usuari>();
 	static List<Reserva> reserves = new ArrayList<Reserva>();
 	
-	public static void main(String[] args) {
+	public static void iniciar() {
 		llegirFitxerICrearObjectes();
 		
 		crearXML();
