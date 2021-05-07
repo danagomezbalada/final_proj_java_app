@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package classes;
+=======
+package firebaseALocal;
+>>>>>>> refs/remotes/origin/Dana
 
 public class ActivitatMobil {
 	
