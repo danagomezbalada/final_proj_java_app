@@ -1,4 +1,5 @@
 package pujarFitxers;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,7 +22,6 @@ import classes.Esdeveniment;
 import classes.Ponent;
 import classes.Reserva;
 import classes.Ubicacio;
-import classes.Usuari;
 
 /**
  * Classe encarregada de la conversio del fitxer de text a XML.
@@ -38,7 +38,6 @@ public class TextAXML {
 	static List<Departament> departaments = new ArrayList<Departament>();
 	static List<Esdeveniment> esdeveniments = new ArrayList<Esdeveniment>();
 	static List<Ponent> ponents = new ArrayList<Ponent>();
-	static List<Usuari> usuaris = new ArrayList<Usuari>();
 	static List<Reserva> reserves = new ArrayList<Reserva>();
 	
 	public static void iniciar() {
@@ -163,7 +162,7 @@ public class TextAXML {
 				Reserva r = it3.next();
 				aux += "\n\t<reserva>";
 				aux += "\n\t\t<id>" + r.getId() + "</id>";
-				aux += "\n\t\t<idUsuari>" + r.getUsuari().getId() + "</idUsuari>";
+				aux += "\n\t\t<email>" + r.getEmail() + "</email>";
 				aux += "\n\t\t<idActivitat>" + r.getActivitat().getId() + "</idActivitat>";
 				aux += "\n\t\t<data>" + r.getData() + "</data>";
 				aux += "\n\t\t<codiTransaccio>" + r.getCodiTransaccio() + "</codiTransaccio>";
@@ -234,9 +233,6 @@ public class TextAXML {
 				break;
 			case "AC":
 				insertarRelacioActivitatCategoria(valors);
-				break;
-			case "US":
-				insertarUsuari(valors);
 				break;
 			case "R":
 				insertarReserva(valors);
@@ -421,37 +417,16 @@ public class TextAXML {
 	}
 	
 	/**
-	 * Crea un objecte usuari amb els valors rebuts.
-	 * @param valors
-	 */
-	private static void insertarUsuari(String[] valors) {
-		int id = Integer.parseInt(valors[0]);
-		String email = valors[1];
-		
-		Usuari usuari = new Usuari(id, email);
-		usuaris.add(usuari);
-	}
-	
-	/**
 	 * Crea un objecte reserva amb els valors rebuts, i afegeix la reserva a la llista de reserves de l'usuari(constructor).
 	 * @param valors
 	 */
 	private static void insertarReserva(String[] valors) {
 		int id = Integer.parseInt(valors[0]);
-		
-		//Afegir usuari
-		Usuari usuari = null;
-		boolean trobat = false;
-		Iterator<Usuari> itUsuaris = usuaris.iterator();
-		while (itUsuaris.hasNext() && !trobat) {
-			usuari = itUsuaris.next();
-			if (usuari.getId() == Integer.parseInt(valors[1]))
-				trobat = true;
-		}
+		String email = valors[1];
 		
 		//Afegir activitat
 		Activitat activitat = null;
-		trobat = false;
+		boolean trobat = false;
 		Iterator<Activitat> itActivitats = activitats.iterator();
 		while (itActivitats.hasNext() && !trobat) {
 			activitat = itActivitats.next();
@@ -463,7 +438,7 @@ public class TextAXML {
 		String codiTransaccio = valors[4];
 		int estat = Integer.parseInt(valors[5]);
 		
-		Reserva reserva = new Reserva(id, usuari, activitat, data, codiTransaccio, estat);
+		Reserva reserva = new Reserva(id, email, activitat, data, codiTransaccio, estat);
 		reserves.add(reserva);
 	}
 	

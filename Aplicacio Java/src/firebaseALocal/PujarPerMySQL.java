@@ -98,8 +98,8 @@ public class PujarPerMySQL {
 			ResultSet rs = stmt.executeQuery();
 			if (!rs.isBeforeFirst() ) {    
 				String s = new SimpleDateFormat("yyyy-MM-dd").format(r.getData());
-				String sql="INSERT INTO reserva (id, id_usuari,id_activitat,data,codi_transaccio,estat) VALUES ("
-						+r.getId()+","+r.getUsuari()+","+r.getIdActivitat()+",'"
+				String sql="INSERT INTO reserva (id,email,id_activitat,data,codi_transaccio,estat) VALUES ("
+						+r.getId()+",'"+r.getEmail()+"',"+r.getIdActivitat()+",'"
 						+s+"','"+r.getCodiTransaccio()+"',"+r.getEstat()+")";
 				Statement statement = connexio.createStatement();
 				statement.execute(sql);

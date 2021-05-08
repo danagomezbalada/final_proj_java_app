@@ -125,8 +125,8 @@ public class ObtenirDadesFirebase {
 			    				case ("id_activitat"):
 			    					r.setIdActivitat(Integer.parseInt(value));
 			    					break;
-			    				case ("id_usuari"):
-			    					r.setUsuari(Integer.parseInt(value));
+			    				case ("email"):
+			    					r.setEmail(value);
 			    					break;
 			    				default:
 			    			}
