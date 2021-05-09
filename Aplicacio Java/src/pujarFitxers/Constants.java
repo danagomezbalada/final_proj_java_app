@@ -15,6 +15,7 @@ public class Constants {
 	public static final String XML_CATEGORIES = "categories.xml";
 	public static final String XML_ESDEVENIMENTS = "esdeveniments.xml";
 	public static final String XML_RESERVES = "reserves.xml";
+	public static final String XML_ACTIVITAT_CATEGORIA = "activitat_categoria.xml";
 	public static final String FITXER_JSON = "firebase.json";
 	
 	//Constants de FTP

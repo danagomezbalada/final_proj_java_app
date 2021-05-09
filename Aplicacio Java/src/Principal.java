@@ -8,13 +8,13 @@ public class Principal {
 
 	public static void main(String[] args) {
 		System.out.println("===========================================");
-		//TextAXML.iniciar();
+		TextAXML.iniciar();
 		System.out.println("===========================================");
-		//PujarPerFTP.iniciar();
+		PujarPerFTP.iniciar();
 		System.out.println("===========================================");
-		ObtenirDadesFirebase.iniciar();
+		//ObtenirDadesFirebase.iniciar();
 		System.out.println("===========================================");
-		PujarPerMySQL.iniciar(ObtenirDadesFirebase.getActivitats(), ObtenirDadesFirebase.getReserves());
+		//PujarPerMySQL.iniciar(ObtenirDadesFirebase.getActivitats(), ObtenirDadesFirebase.getReserves());
 		System.out.println("===========================================");
 	}
 

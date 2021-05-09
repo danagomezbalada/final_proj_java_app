@@ -174,6 +174,25 @@ public class TextAXML {
 			escriptor.close();
 			System.out.println("Fitxer " + Constants.XML_RESERVES + " creat correctament.");
 			
+			//-------------Creacio activitat_categoria---------------------
+			xml = new File(Constants.DIRECTORI+Constants.XML_ACTIVITAT_CATEGORIA);
+			escriptor = new PrintStream(xml);
+			aux = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<activitat_categories>";
+			Iterator<Activitat> it4 = activitats.iterator();
+			while (it4.hasNext()) {
+				Activitat a = it4.next();
+				for (Categoria c : a.getCategories()) {
+					aux += "\n\t<activitat_categoria>";
+					aux += "\n\t\t<id_activitat>" + a.getId() + "</id_activitat>";
+					aux += "\n\t\t<id_categoria>" + c.getId() + "</id_categoria>";
+					aux += "\n\t</activitat_categoria>";
+				}
+			}
+			aux += "\n</activitat_categories>";
+			escriptor.print(aux);
+			escriptor.close();
+			System.out.println("Fitxer " + Constants.XML_ACTIVITAT_CATEGORIA + " creat correctament.");
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

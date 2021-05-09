@@ -73,6 +73,15 @@ public class PujarPerFTP {
             if (correcte) 
                 System.out.println("Fitxer " + Constants.XML_RESERVES + " pujat correctament.");
             inputStream.close();
+            
+          //Activitat_Categoria
+            File fitxerActivitatCategoriaLocal = new File(Constants.DIRECTORI+Constants.XML_ACTIVITAT_CATEGORIA);
+            String fitxerActivitatCategoriaRemot = Constants.XML_ACTIVITAT_CATEGORIA;
+            inputStream = new FileInputStream(fitxerActivitatCategoriaLocal);
+            correcte = ftpClient.storeFile(fitxerActivitatCategoriaRemot, inputStream);
+            if (correcte) 
+                System.out.println("Fitxer " + Constants.XML_ACTIVITAT_CATEGORIA + " pujat correctament.");
+            inputStream.close();
  
         } catch (IOException ex) {
             System.out.println("Error: " + ex.getMessage());
