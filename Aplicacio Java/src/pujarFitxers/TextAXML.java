@@ -101,9 +101,15 @@ public class TextAXML {
 				aux += "\n\t\t<descripcio>" + a.getDescripcio() + "</descripcio>";
 				aux += "\n\t\t<departament>" + a.getDepartament().getNom() + "</departament>";
 				aux += "\n\t\t<ponents>";
-				for (Ponent p : a.getPonents()) 
-					aux += "\n\t\t\t<ponent>" + p.getNom() + " " + p.getCognoms() + "</ponent>";
-				aux += "\n\t\t</ponents>";
+				int i=0;
+				for (Ponent p : a.getPonents()) {
+					if (i>0)
+						aux += ", ";
+					aux += p.getNom() + " " + p.getCognoms();
+					i++;
+				}
+					
+				aux += "</ponents>";
 				aux += "\n\t\t<preu>" + a.getPreu() + "</preu>";
 				aux += "\n\t\t<placesTotals>" + a.getPlacesTotals() + "</placesTotals>";
 				aux += "\n\t\t<placesActuals>" + a.getPlacesActuals() + "</placesActuals>";
