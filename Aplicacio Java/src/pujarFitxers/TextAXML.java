@@ -116,8 +116,10 @@ public class TextAXML {
 				aux += "\n\t\t<preu>" + a.getPreu() + "</preu>";
 				aux += "\n\t\t<placesTotals>" + a.getPlacesTotals() + "</placesTotals>";
 				aux += "\n\t\t<placesActuals>" + a.getPlacesActuals() + "</placesActuals>";
-				aux += "\n\t\t<dataIniciMostra>" + a.getDataIniciMostra() + "</dataIniciMostra>";
-				aux += "\n\t\t<dataFiMostra>" + a.getDataFiMostra() + "</dataFiMostra>";
+				data = formatData.format(a.getDataIniciMostra());
+				aux += "\n\t\t<dataIniciMostra>" + data + "</dataIniciMostra>";
+				data = formatData.format(a.getDataFiMostra());
+				aux += "\n\t\t<dataFiMostra>" + data + "</dataFiMostra>";
 				aux += "\n\t</activitat>";
 			}
 			aux += "\n</activitats>";
