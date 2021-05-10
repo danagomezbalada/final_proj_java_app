@@ -41,7 +41,7 @@ public class TextAXML {
 	static List<Ponent> ponents = new ArrayList<Ponent>();
 	static List<Reserva> reserves = new ArrayList<Reserva>();
 	
-	public static void iniciar() {
+	public static void iniciar() throws ParseException, IOException {
 		llegirFitxerICrearObjectes();
 		
 		crearXML();
@@ -52,33 +52,31 @@ public class TextAXML {
 	/**
 	 * Aquest metode s'encarrega de llegir el fitxer que conte les dades de cada objecte, 
 	 * i crear els objectes corresponents, afegint-los a les llistes de cada tipus d'objecte.
+	 * @throws ParseException 
+	 * @throws IOException 
 	 */
-	private static void llegirFitxerICrearObjectes() {
+	private static void llegirFitxerICrearObjectes() throws ParseException, IOException {
 		int lectura;
 		char ch;
 		StringBuilder s = new StringBuilder();
 		String [] valors;
 		
-		try (FileReader lector = new FileReader(Constants.DIRECTORI+Constants.FITXER_DADES);) {
-			while ((lectura = lector.read())!=-1) {
-				ch = (char) lectura;
-				if (ch == '#'){
-					valors = s.toString().split("#");
-					s.setLength(0);
-					tipus = valors[0];
-				}else if (ch == '\n') {
-					valors = s.toString().replaceAll("(\\r)", "").split(";");
-					s.setLength(0);
-					afegirValors(valors);
-				}else {
-					s.append(ch);
-				}
+		FileReader lector = new FileReader(Constants.DIRECTORI+Constants.FITXER_DADES);
+		while ((lectura = lector.read())!=-1) {
+			ch = (char) lectura;
+			if (ch == '#'){
+				valors = s.toString().split("#");
+				s.setLength(0);
+				tipus = valors[0];
+			}else if (ch == '\n') {
+				valors = s.toString().replaceAll("(\\r)", "").split(";");
+				s.setLength(0);
+				afegirValors(valors);
+			}else {
+				s.append(ch);
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+		lector.close();
 	}
 	
 	/**
@@ -213,34 +211,31 @@ public class TextAXML {
 	
 	/**
 	 * Metode que actualitza el fitxer de versio sumant 0.3 al valor d'aquest.
+	 * @throws IOException
 	 */
-	public static void actualitzarVersio() {
+	public static void actualitzarVersio() throws IOException {
 		String fitxer = Constants.DIRECTORI+Constants.FITXER_VERSIO;
 		String s = "0";
 		double numVersio = 0;
-		try (BufferedReader lector = new BufferedReader(new FileReader(fitxer));) {
-			while ((s=lector.readLine()) != null)
-				numVersio = Double.valueOf(s);
-		} catch (IOException e) {
-			System.err.println("Error al llegir el fitxer de versio.");
-			e.printStackTrace();
-		}
+		BufferedReader lector = new BufferedReader(new FileReader(fitxer));
+		while ((s=lector.readLine()) != null)
+			numVersio = Double.valueOf(s);
 		numVersio += 0.3;
 		s = Double.toString(numVersio);
-		try (BufferedWriter escriptor = new BufferedWriter(new FileWriter(fitxer));){
-			escriptor.write(s);
-			System.out.println("Fitxer " + Constants.FITXER_VERSIO + " actualitzat correctament! (Versio " + s + ")");
-		} catch (IOException e) {
-			System.err.println("Error al actualitzar el fitxer de versio.");
-			e.printStackTrace();
-		}
+		BufferedWriter escriptor = new BufferedWriter(new FileWriter(fitxer));
+		escriptor.write(s);
+		System.out.println("Fitxer " + Constants.FITXER_VERSIO + " actualitzat correctament! (Versio " + s + ")");
+		
+		lector.close();
+		escriptor.close();
 	}
 	
 	/**
 	 * Segons el tipus d'objecte a crear, crida el metode corresponent.
 	 * @param valors - Les dades de l'objecte a ser creat.
+	 * @throws ParseException 
 	 */
-	private static void afegirValors(String [] valors) {
+	private static void afegirValors(String [] valors) throws ParseException {
 		switch (tipus) {
 			case "C":
 				insertarCategoria(valors);
@@ -342,8 +337,9 @@ public class TextAXML {
 	/**
 	 * Crea un objecte activitat amb els valors rebuts.
 	 * @param valors
+	 * @throws ParseException 
 	 */
-	private static void insertarActivitat(String[] valors) {
+	private static void insertarActivitat(String[] valors) throws ParseException {
 		int id = Integer.parseInt(valors[0]);
 		String titol = valors[1];
 		Date data = stringADate(valors[2]);
@@ -451,8 +447,9 @@ public class TextAXML {
 	/**
 	 * Crea un objecte reserva amb els valors rebuts, i afegeix la reserva a la llista de reserves de l'usuari(constructor).
 	 * @param valors
+	 * @throws ParseException 
 	 */
-	private static void insertarReserva(String[] valors) {
+	private static void insertarReserva(String[] valors) throws ParseException {
 		int id = Integer.parseInt(valors[0]);
 		String email = valors[1];
 		
@@ -478,15 +475,12 @@ public class TextAXML {
 	 * Converteix un string a Date.
 	 * @param string
 	 * @return Date
+	 * @throws ParseException 
 	 */
-	private static Date stringADate(String string) {
+	private static Date stringADate(String string) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
-		try {
-			date = sdf.parse(string);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		date = sdf.parse(string);
 		return date;
 	}
 	

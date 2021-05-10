@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Scanner;
 
 import classes.ActivitatMobil;
 import classes.ReservaMobil;
@@ -23,40 +22,27 @@ import pujarFitxers.Constants;
 public class PujarPerMySQL {
 	static Connection connexio;
 	
-	public static void iniciar(List<ActivitatMobil> activitats, List<ReservaMobil> reserves) {
-        try {
-        	iniciarConnexio();
+	public static void iniciar(List<ActivitatMobil> activitats, List<ReservaMobil> reserves, String password) throws ClassNotFoundException, SQLException {
+
+		iniciarConnexio(password);
         	
-			actualitzarActivitats(activitats);
+		actualitzarActivitats(activitats);
 			
-			insertarReserves(reserves);
+		insertarReserves(reserves);
 	        
-			tancarConnexio();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		tancarConnexio();
 	}
 
 	/**
 	 * Metode que inicia una connexio amb la BBDD.
+	 * @throws ClassNotFoundException 
+	 * @throws SQLException 
 	 */
-	public static void iniciarConnexio() {
-		try {
-        	System.out.println("\nConnectant a la BBDD...\n");
-            System.out.println("Port: 3306\nBBDD: projecte_escriptori\nUsuari: root\nIntrodueixi la contrasenya: ");
-            Scanner s = new Scanner(System.in);
-            String password = s.next();
-			Class.forName(Constants.MYSQL_DRIVER);
-			connexio = DriverManager.getConnection(Constants.MYSQL_URL, Constants.MYSQL_USUARI, password);
-	        System.out.println("\nConnexio exitosa!\n");
-	        s.close();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			if (e.getErrorCode() == 1045)
-				System.err.println("Contrasenya incorrecta!");
-			e.printStackTrace();
-		}
+	public static void iniciarConnexio(String password) throws ClassNotFoundException, SQLException {
+		System.out.println("\nConnectant a la BBDD...\n");
+		Class.forName(Constants.MYSQL_DRIVER);
+		connexio = DriverManager.getConnection(Constants.MYSQL_URL, Constants.MYSQL_USUARI, password);
+        System.out.println("\nConnexio exitosa!\n");
 	}
 	
 	/**
