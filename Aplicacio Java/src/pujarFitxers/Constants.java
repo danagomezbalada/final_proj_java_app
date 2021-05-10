@@ -8,7 +8,7 @@ package pujarFitxers;
 public class Constants {
 	//Constants de fitxers
 	public static String DIRECTORI = "C:\\Fitxers";
-	public static final String FITXER_DADES = "dadesPROVA.txt";
+	public static final String FITXER_DADES = "dades.txt";
 	public static final String FITXER_VERSIO = "versio.txt";
 	public static final String XML_ACTIVITATS = "activitats.xml";
 	public static final String XML_CATEGORIES = "categories.xml";
