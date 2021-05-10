@@ -6,9 +6,8 @@ package pujarFitxers;
  * @author Javier Garcia
  */
 public class Constants {
-	//TODO: Canviar directori dels fitxers.
 	//Constants de fitxers
-	public static final String DIRECTORI = "D:\\Documents\\DAM 2\\M13 Projecte\\Fitxers\\";
+	public static String DIRECTORI = "C:\\Fitxers";
 	public static final String FITXER_DADES = "dadesPROVA.txt";
 	public static final String FITXER_VERSIO = "versio.txt";
 	public static final String XML_ACTIVITATS = "activitats.xml";

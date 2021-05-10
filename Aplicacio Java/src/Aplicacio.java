@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,24 +36,54 @@ public class Aplicacio {
 	static JPanel esquerraTop;
 	static JPanel dretaTop;
 	static JLabel sortida;
+	static JFileChooser chooser;
+	static boolean fitxerSeleccionat;
 
 	public static void main(String[] args) {
+		do {
+			JOptionPane.showMessageDialog(principal,"Siusplau, seleccioni el directori amb el qual treballar.","Seleccio",JOptionPane.INFORMATION_MESSAGE);
+			demanar_directori();
+			
+			if (fitxerSeleccionat) {
+				Constants.DIRECTORI = chooser.getSelectedFile().toString() + "\\";
+				System.out.println(Constants.DIRECTORI);
+				crear_panells();
+				crear_controls_esquerra();
+				crear_controls_dreta();
+				
+				principal.setVisible(true);
+				
+				principal.addWindowListener(new WindowAdapter() {
+				@Override
+			        public void windowClosing(WindowEvent e) {
+						System.exit(0);
+			        }
+			    });
+			} else {
+				int dialogResult = JOptionPane.showConfirmDialog(principal,"Vol sortir del programa?","Avis",JOptionPane.YES_NO_OPTION);
+				if (dialogResult == JOptionPane.YES_OPTION){
+					fitxerSeleccionat = true;
+				}
+			}
+		} while (!fitxerSeleccionat);
 		
-		crear_panells();
-		crear_controls_esquerra();
-		crear_controls_dreta();
-		
-		principal.setVisible(true);
-		
-		principal.addWindowListener(new WindowAdapter() {
-		@Override
-	        public void windowClosing(WindowEvent e) {
-				System.exit(0);
-	        }
-	    });
 
 	}
 	
+	private static void demanar_directori() {
+		chooser = new JFileChooser(); 
+	    chooser.setCurrentDirectory(new java.io.File(Constants.DIRECTORI));
+	    chooser.setDialogTitle("Escollir directori de treball");
+	    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	    chooser.setAcceptAllFileFilterUsed(false);
+	    
+	    if (chooser.showOpenDialog(principal) == JFileChooser.APPROVE_OPTION)
+	    	fitxerSeleccionat = true;
+	    else
+	    	fitxerSeleccionat = false;
+		
+	}
+
 	public static void crear_panells() {
 		principal= new JFrame();
 		principal.setSize(500, 400);
