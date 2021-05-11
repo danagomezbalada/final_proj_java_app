@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import classes.ActivitatMobil;
 import classes.ReservaMobil;
 import pujarFitxers.Constants;
 
@@ -22,11 +21,9 @@ import pujarFitxers.Constants;
 public class PujarPerMySQL {
 	static Connection connexio;
 	
-	public static void iniciar(List<ActivitatMobil> activitats, List<ReservaMobil> reserves, String password) throws ClassNotFoundException, SQLException {
+	public static void iniciar(List<ReservaMobil> reserves, String password) throws ClassNotFoundException, SQLException {
 
 		iniciarConnexio(password);
-        	
-		actualitzarActivitats(activitats);
 			
 		insertarReserves(reserves);
 	        
@@ -54,22 +51,6 @@ public class PujarPerMySQL {
 			connexio.close();
 			System.out.println("\nConnexio a la BBDD tancada.");
 		}
-	}
-	
-	/**
-	 * Aquesta funcio actualitza les places actuals de les activitats rebudes de firebase.
-	 * @param activitats
-	 * @throws SQLException
-	 */
-	private static void actualitzarActivitats(List<ActivitatMobil> activitats) throws SQLException {
-		for (ActivitatMobil a : activitats) {
-			String sql="UPDATE activitat SET places_actuals="+a.getPlacesActuals()+" WHERE id="+a.getId()+" ";
-			Statement statement = connexio.createStatement();
-			statement.execute(sql);
-			statement.close();
-			System.out.println("Activitat " + a.getId() + " actualitzada correctament.");
-		}
-		
 	}
 	
 	/**

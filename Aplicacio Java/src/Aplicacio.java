@@ -166,7 +166,7 @@ public class Aplicacio {
 				try {
 					String aux = JOptionPane.showInputDialog(principal,"Port: 3306\nBBDD: projecte_escriptori\nUsuari: root\nIntrodueixi la contrasenya: ");
 					if ((aux != null) && (aux.length() > 0)) {
-						PujarPerMySQL.iniciar(ObtenirDadesFirebase.getActivitats(), ObtenirDadesFirebase.getReserves(), aux);
+						PujarPerMySQL.iniciar(ObtenirDadesFirebase.getReserves(), aux);
 						JOptionPane.showMessageDialog(principal,"BBDD local actualitzada correctament!","Dades pujades",JOptionPane.INFORMATION_MESSAGE);
 					} else {
 						JOptionPane.showMessageDialog(principal,"No es pot deixar el camp buit!","Contrasenya incorrecta! ",JOptionPane.ERROR_MESSAGE);
