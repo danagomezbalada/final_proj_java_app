@@ -61,6 +61,7 @@ public class ObtenirDadesFirebase {
 			e.printStackTrace();
 		}
 		System.out.println("\nFitxer " + Constants.FITXER_JSON + " creat.\n");
+		firebase.delete();
 	}
 	
 	/**
