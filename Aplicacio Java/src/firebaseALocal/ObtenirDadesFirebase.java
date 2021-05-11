@@ -80,37 +80,39 @@ public class ObtenirDadesFirebase {
 		
 		//Creem el primer mapa que agafara els IDs de cada reserva
 	    Map<?, ?> map = mapper.readValue(Paths.get(Constants.DIRECTORI+"firebase.json").toFile(), Map.class);
-	    for (Map.Entry<?, ?> entry : map.entrySet()) {
-	    	String key = entry.getKey().toString();
-	    	String id = key.substring(1);
-	    	ReservaMobil r = new ReservaMobil(Integer.parseInt(id));
-	    	
-	        //Amb un segon mapa obtenim les dades de cada camp de la reserva
-		    Map<?, ?> map2 = (Map<?, ?>) map.get(entry.getKey());
-		    for (Map.Entry<?, ?> entry2 : map2.entrySet()) {
-    			String value = entry2.getValue().toString();
-    			String key2 = entry2.getKey().toString();
-    			switch (key2) {
-    				case ("codi_transaccio"):
-    					r.setCodiTransaccio(value);
-    					break;
-    				case ("estat"):
-    					r.setEstat(Integer.parseInt(value));
-    					break;
-    				case ("data"):
-    					r.setData(stringADate(value));
-    					break;
-    				case ("id_activitat"):
-    					r.setIdActivitat(Integer.parseInt(value));
-    					break;
-    				case ("email"):
-    					r.setEmail(value);
-    					break;
-    				default:
-    			}
-		    }
-		    reserves.add(r);
-		}
+	    if (map != null && !map.isEmpty()) {
+	    	for (Map.Entry<?, ?> entry : map.entrySet()) {
+		    	String key = entry.getKey().toString();
+		    	String id = key.substring(1);
+		    	ReservaMobil r = new ReservaMobil(Integer.parseInt(id));
+		    	
+		        //Amb un segon mapa obtenim les dades de cada camp de la reserva
+			    Map<?, ?> map2 = (Map<?, ?>) map.get(entry.getKey());
+			    for (Map.Entry<?, ?> entry2 : map2.entrySet()) {
+	    			String value = entry2.getValue().toString();
+	    			String key2 = entry2.getKey().toString();
+	    			switch (key2) {
+	    				case ("codi_transaccio"):
+	    					r.setCodiTransaccio(value);
+	    					break;
+	    				case ("estat"):
+	    					r.setEstat(Integer.parseInt(value));
+	    					break;
+	    				case ("data"):
+	    					r.setData(stringADate(value));
+	    					break;
+	    				case ("id_activitat"):
+	    					r.setIdActivitat(Integer.parseInt(value));
+	    					break;
+	    				case ("email"):
+	    					r.setEmail(value);
+	    					break;
+	    				default:
+	    			}
+			    }
+			    reserves.add(r);
+			}
+	    }
 		System.out.println("Dades obtingudes correctament.\n");
 	}
 	
