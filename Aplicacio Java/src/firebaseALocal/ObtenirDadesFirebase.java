@@ -18,7 +18,6 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import classes.ActivitatMobil;
 import classes.ReservaMobil;
 import firebase4j.Firebase;
 import firebase4j.FirebaseException;
@@ -34,7 +33,6 @@ import pujarFitxers.Constants;
 public class ObtenirDadesFirebase {
 	
 	static Firebase firebase;
-	static List<ActivitatMobil> activitats;
 	static List<ReservaMobil> reserves;
 
 	public static void iniciar() throws IOException, ParseException, FirebaseException {
@@ -75,65 +73,42 @@ public class ObtenirDadesFirebase {
 	 * @throws ParseException 
 	 */
 	public static void obtenirDades() throws IOException, ParseException {
-		activitats = new ArrayList<ActivitatMobil>();
 		reserves = new ArrayList<ReservaMobil>();
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println("Obtenint dades de " + Constants.FITXER_JSON);
 		
-		//Creem el primer mapa que agafara els valors de A i R (totes les activitats i totes les reserves)
+		//Creem el primer mapa que agafara els IDs de cada reserva
 	    Map<?, ?> map = mapper.readValue(Paths.get(Constants.DIRECTORI+"firebase.json").toFile(), Map.class);
 	    for (Map.Entry<?, ?> entry : map.entrySet()) {
+	    	String key = entry.getKey().toString();
+	    	String id = key.substring(1);
+	    	ReservaMobil r = new ReservaMobil(Integer.parseInt(id));
 	    	
-	        //Amb un segon mapa obtenim la ID de cada Activitat i Reserva
+	        //Amb un segon mapa obtenim les dades de cada camp de la reserva
 		    Map<?, ?> map2 = (Map<?, ?>) map.get(entry.getKey());
 		    for (Map.Entry<?, ?> entry2 : map2.entrySet()) {
-		    	String key = entry2.getKey().toString();
-		    	//ACTIVITATS
-		    	if (key.startsWith("A")) {
-			    	String id = key.substring(1);
-			    	ActivitatMobil a = new ActivitatMobil(Integer.parseInt(id));
-			        
-			        //Amb un tercer mapa obtenim les places actuals de cada activitat
-				    Map<?, ?> map3 = (Map<?, ?>) map2.get("A"+a.getId());
-				    for (Map.Entry<?, ?> entry3 : map3.entrySet()) {
-				    	String value = entry3.getValue().toString();
-				    	int places = Integer.parseInt(value);
-				    	a.setPlacesActuals(places);
-				    }
-				    activitats.add(a);
-		    	}
-		    	//RESERVES 
-		    	else if (key.startsWith("R")) {
-		    		String id = key.substring(1);
-		    		ReservaMobil r = new ReservaMobil(Integer.parseInt(id));
-		    		
-		    		//Amb un tercer mapa obtenim la resta de dades de la reserva
-		    		Map<?, ?> map3 = (Map<?, ?>) map2.get("R" + r.getId());
-		    		for (Map.Entry<?, ?> entry3 : map3.entrySet()) {
-		    			String value = entry3.getValue().toString();
-		    			String key2 = entry3.getKey().toString();
-		    			switch (key2) {
-		    				case ("codi_transaccio"):
-		    					r.setCodiTransaccio(value);
-		    					break;
-		    				case ("estat"):
-		    					r.setEstat(Integer.parseInt(value));
-		    					break;
-		    				case ("data"):
-		    					r.setData(stringADate(value));
-		    					break;
-		    				case ("id_activitat"):
-		    					r.setIdActivitat(Integer.parseInt(value));
-		    					break;
-		    				case ("email"):
-		    					r.setEmail(value);
-		    					break;
-		    				default:
-		    			}
-		    		}
-		    		reserves.add(r);
-		    	}
+    			String value = entry2.getValue().toString();
+    			String key2 = entry2.getKey().toString();
+    			switch (key2) {
+    				case ("codi_transaccio"):
+    					r.setCodiTransaccio(value);
+    					break;
+    				case ("estat"):
+    					r.setEstat(Integer.parseInt(value));
+    					break;
+    				case ("data"):
+    					r.setData(stringADate(value));
+    					break;
+    				case ("id_activitat"):
+    					r.setIdActivitat(Integer.parseInt(value));
+    					break;
+    				case ("email"):
+    					r.setEmail(value);
+    					break;
+    				default:
+    			}
 		    }
+		    reserves.add(r);
 		}
 		System.out.println("Dades obtingudes correctament.\n");
 	}
@@ -149,10 +124,6 @@ public class ObtenirDadesFirebase {
 		Date date = null;
 		date = sdf.parse(string);
 		return date;
-	}
-
-	public static List<ActivitatMobil> getActivitats() {
-		return activitats;
 	}
 
 	public static List<ReservaMobil> getReserves() {
