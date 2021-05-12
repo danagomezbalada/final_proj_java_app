@@ -204,6 +204,15 @@ public class TextAXML {
 			escriptor.close();
 			System.out.println("Fitxer " + Constants.XML_ACTIVITAT_CATEGORIA + " creat correctament.");
 			
+			//Buida les llistes
+			categories.clear();
+			activitats.clear();
+			ubicacions.clear();
+			departaments.clear();
+			esdeveniments.clear();
+			ponents.clear();
+			reserves.clear();
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
