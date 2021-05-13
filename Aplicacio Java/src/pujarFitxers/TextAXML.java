@@ -226,6 +226,10 @@ public class TextAXML {
 		String fitxer = Constants.DIRECTORI+Constants.FITXER_VERSIO;
 		String s = "0";
 		double numVersio = 0;
+		//Crea el fitxer si no existeix
+		File f = new File(fitxer);
+		if (!f.exists())
+			f.createNewFile();
 		BufferedReader lector = new BufferedReader(new FileReader(fitxer));
 		while ((s=lector.readLine()) != null)
 			numVersio = Double.valueOf(s);
